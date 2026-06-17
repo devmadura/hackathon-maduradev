@@ -11,9 +11,15 @@
 
   gsap.registerPlugin(ScrollTrigger);
 
+  console.log("[GSAP] animations.js initialized successfully.");
+  console.log("[GSAP] Active page height:", document.documentElement.scrollHeight);
+
   // ── Reduced motion: disable all animations ──
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    console.warn("[GSAP] Reduced motion is enabled on this system. Scaling timeline speed to 0 (disabling animations).");
     gsap.globalTimeline.timeScale(0);
+  } else {
+    console.log("[GSAP] Reduced motion is disabled. Animations active.");
   }
 
   // ── 1. Navbar — hide on scroll down, show on scroll up ──
@@ -41,12 +47,12 @@
     .from("#hero-sub", { opacity: 0, y: 20, duration: 0.5 }, "-=0.4")
     .from("#hero-tagline", { opacity: 0, y: 20, duration: 0.5 }, "-=0.3")
     .from("#hero-countdown", { opacity: 0, scale: 0.95, duration: 0.6 }, "-=0.2")
-    .from("#hero-ctas", { opacity: 0, y: 16, duration: 0.5 }, "-=0.2")
-    .from("#hero-scroll", { opacity: 0, duration: 0.4 });
+    .from("#hero-ctas", { opacity: 0, y: 16, duration: 0.5 }, "-=0.2");
 
   // ── 3. Scroll reveal — all [data-reveal] elements ──
   const reveals = document.querySelectorAll("[data-reveal]");
-
+  console.log("[GSAP] Number of [data-reveal] elements found:", reveals.length);
+  
   reveals.forEach((el) => {
     gsap.from(el, {
       scrollTrigger: {
@@ -64,6 +70,7 @@
 
   // ── 4. Timeline — alternating left/right entrance ──
   const timelineItems = document.querySelectorAll(".timeline-item");
+  console.log("[GSAP] Number of .timeline-item elements found:", timelineItems.length);
 
   timelineItems.forEach((item, i) => {
     gsap.from(item, {
@@ -80,6 +87,9 @@
   });
 
   // ── 5. Prize cards — stagger from center ──
+  const prizeCards = document.querySelectorAll(".prize-card");
+  console.log("[GSAP] Number of .prize-card elements found:", prizeCards.length);
+
   gsap.from(".prize-card", {
     scrollTrigger: {
       trigger: "#prizes",

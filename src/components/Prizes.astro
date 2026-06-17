@@ -53,37 +53,39 @@ const prizes = [
     <!-- Prize server blades (podium layout on large screens) -->
     <div class="grid md:grid-cols-3 gap-8 items-end font-mono">
       {prizes.map((prize) => (
-        <div
-          class={`prize-card code-card rounded bg-dark-surface/90 border ${prize.border} p-6 sm:p-8 text-left hover:scale-[1.02] transition-all duration-300 ${prize.place === "1" ? "md:-translate-y-8" : ""}`}
-          style={`box-shadow: 0 10px 40px -15px ${prize.glow}`}
-        >
-          <!-- Hardware tag -->
-          <div class="flex items-center justify-between text-[9px] text-text-muted border-b border-dark-border pb-3 mb-5">
-            <span>{prize.indicator}</span>
-            <span class={prize.textClass}>ONLINE</span>
-          </div>
+        <div class="prize-card w-full">
+          <div
+            class={`code-card rounded bg-dark-surface/90 border ${prize.border} p-6 sm:p-8 text-left hover:scale-[1.02] transition-all duration-300 ${prize.place === "1" ? "md:-translate-y-8" : ""}`}
+            style={`box-shadow: 0 10px 40px -15px ${prize.glow}`}
+          >
+            <!-- Hardware tag -->
+            <div class="flex items-center justify-between text-[9px] text-text-muted border-b border-dark-border pb-3 mb-5">
+              <span>{prize.indicator}</span>
+              <span class={prize.textClass}>ONLINE</span>
+            </div>
 
-          <!-- Title object -->
-          <div class="space-y-1 mb-6">
-            <span class={`inline-block px-2.5 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider border ${prize.badge}`}>
-              {prize.label}
-            </span>
-            <p class="text-xs text-text-muted mt-2">// CASH_GRANT_VALUE</p>
-            <p class={`text-2xl sm:text-3xl font-extrabold tracking-tight ${prize.textClass}`}>
-              {prize.nominal}
-            </p>
-          </div>
+            <!-- Title object -->
+            <div class="space-y-1 mb-6">
+              <span class={`inline-block px-2.5 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider border ${prize.badge}`}>
+                {prize.label}
+              </span>
+              <p class="text-xs text-text-muted mt-2">// CASH_GRANT_VALUE</p>
+              <p class={`text-2xl sm:text-3xl font-extrabold tracking-tight ${prize.textClass}`}>
+                {prize.nominal}
+              </p>
+            </div>
 
-          <!-- Benefits JSON Mock -->
-          <div class="border-t border-dark-border/40 pt-4 space-y-3">
-            <p class="text-[10px] text-text-muted">// perk_allocations = [</p>
-            {prize.benefits.map((b) => (
-              <div class="flex items-start gap-2.5 pl-2 text-xs">
-                <span class="text-terminal-yellow">"✔"</span>
-                <span class="text-text-muted leading-relaxed font-sans">{b},</span>
-              </div>
-            ))}
-            <p class="text-[10px] text-text-muted">]</p>
+            <!-- Benefits JSON Mock -->
+            <div class="border-t border-dark-border/40 pt-4 space-y-3">
+              <p class="text-[10px] text-text-muted">// perk_allocations = [</p>
+              {prize.benefits.map((b) => (
+                <div class="flex items-start gap-2.5 pl-2 text-xs">
+                  <span class="text-terminal-yellow">"✔"</span>
+                  <span class="text-text-muted leading-relaxed font-sans">{b},</span>
+                </div>
+              ))}
+              <p class="text-[10px] text-text-muted">]</p>
+            </div>
           </div>
         </div>
       ))}
