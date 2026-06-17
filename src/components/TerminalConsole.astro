@@ -1,0 +1,318 @@
+---
+// TerminalConsole.astro
+---
+
+<div class="terminal-window rounded-lg overflow-hidden border border-dark-border shadow-2xl w-full max-w-2xl mx-auto font-mono text-left text-sm scanlines">
+  <!-- Window Header -->
+  <div class="terminal-header flex items-center justify-between px-4 py-2.5 bg-dark-surface border-b border-dark-border">
+    <div class="terminal-dots flex items-center gap-2">
+      <span class="terminal-dot terminal-dot-close"></span>
+      <span class="terminal-dot terminal-dot-minimize"></span>
+      <span class="terminal-dot terminal-dot-maximize"></span>
+    </div>
+    <div class="text-xs text-text-muted select-none">maduradev@semesta8:~</div>
+    <div class="w-10"></div> <!-- spacing -->
+  </div>
+
+  <!-- Tabs Bar -->
+  <div class="flex border-b border-dark-border bg-[#07070d] text-xs text-text-muted">
+    <div class="px-4 py-2 border-r border-dark-border bg-dark-surface text-terminal-cyan flex items-center gap-1.5 border-t-2 border-t-terminal-cyan">
+      <span class="text-[10px]">🐚</span> semesta8.sh
+    </div>
+    <div class="px-4 py-2 border-r border-dark-border hover:bg-dark-surface/50 cursor-pointer flex items-center gap-1.5">
+      <span class="text-[10px]">📝</span> rules.md
+    </div>
+    <div class="px-4 py-2 border-r border-dark-border hover:bg-dark-surface/50 cursor-pointer flex items-center gap-1.5">
+      <span class="text-[10px]">⚙️</span> config.json
+    </div>
+  </div>
+
+  <!-- Terminal Display Body -->
+  <div class="p-5 h-[340px] overflow-y-auto bg-dark-surface/90 flex flex-col gap-2 scrollbar-style" id="terminal-screen">
+    <div class="text-text-muted"># SEMESTA 8 — Sevima & Madura.dev Hackathon CLI</div>
+    <div class="text-text-muted"># Type <span class="text-terminal-cyan">'help'</span> or click the buttons below to run commands.</div>
+    <div class="text-text-muted">---------------------------------------------------------</div>
+    
+    <div class="flex items-center gap-2">
+      <span class="text-terminal-green">maduradev@semesta8:~$</span>
+      <span class="text-text-primary">npx semesta8 init</span>
+    </div>
+    
+    <div class="text-terminal-green">
+      [SUCCESS] CLI Initialized successfully. Systems active!
+    </div>
+    
+    <!-- Dynamic terminal outputs will append here -->
+    <div id="terminal-history" class="flex flex-col gap-2"></div>
+
+    <!-- Live typing prompt -->
+    <div class="flex items-center gap-2 mt-auto pt-4 border-t border-dark-border/20">
+      <span class="text-terminal-green">maduradev@semesta8:~$</span>
+      <input 
+        type="text" 
+        id="terminal-input" 
+        class="bg-transparent border-none outline-none text-text-primary flex-1 caret-terminal-green font-mono text-sm focus:ring-0 p-0" 
+        placeholder="Type here..." 
+        autocomplete="off"
+        spellcheck="false"
+      />
+    </div>
+  </div>
+
+  <!-- Quick Action Command Buttons -->
+  <div class="p-3 bg-[#07070d] border-t border-dark-border flex flex-wrap gap-2 items-center justify-between text-xs text-text-muted">
+    <div class="flex flex-wrap gap-1.5">
+      <button class="cmd-btn px-2.5 py-1 rounded bg-dark-card border border-dark-border hover:border-terminal-cyan hover:text-terminal-cyan transition-colors" data-cmd="help">help</button>
+      <button class="cmd-btn px-2.5 py-1 rounded bg-dark-card border border-dark-border hover:border-terminal-green hover:text-terminal-green transition-colors" data-cmd="about">about</button>
+      <button class="cmd-btn px-2.5 py-1 rounded bg-dark-card border border-dark-border hover:border-terminal-purple hover:text-terminal-purple transition-colors" data-cmd="timeline">timeline</button>
+      <button class="cmd-btn px-2.5 py-1 rounded bg-dark-card border border-dark-border hover:border-terminal-yellow hover:text-terminal-yellow transition-colors" data-cmd="prizes">prizes</button>
+      <button class="cmd-btn px-2.5 py-1 rounded bg-dark-card border border-dark-border hover:border-terminal-magenta hover:text-terminal-magenta transition-colors" data-cmd="quiz">quiz</button>
+      <button class="cmd-btn px-2.5 py-1 rounded bg-dark-card border border-dark-border hover:border-text-primary hover:text-text-primary transition-colors" data-cmd="clear">clear</button>
+    </div>
+    <span class="text-[10px] hidden sm:inline text-terminal-green animate-pulse">● SYS_READY</span>
+  </div>
+</div>
+
+<style>
+  .scrollbar-style::-webkit-scrollbar {
+    width: 6px;
+  }
+  .scrollbar-style::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .scrollbar-style::-webkit-scrollbar-thumb {
+    background: var(--color-dark-border);
+    border-radius: 3px;
+  }
+  .scrollbar-style::-webkit-scrollbar-thumb:hover {
+    background: var(--color-terminal-cyan);
+  }
+</style>
+
+<script>
+  // Terminal Logic
+  const terminalInput = document.getElementById("terminal-input") as HTMLInputElement;
+  const terminalHistory = document.getElementById("terminal-history");
+  const terminalScreen = document.getElementById("terminal-screen");
+  const cmdButtons = document.querySelectorAll(".cmd-btn");
+
+  let quizState = {
+    active: false,
+    step: 0,
+    answers: [] as string[]
+  };
+
+  const ASCII_ART = `
+<pre class="text-terminal-cyan font-mono text-[10px] leading-tight select-none">
+  ____  _____ __  __ _____ ____ _____  _      ___  
+ / ___|| ____|  \\/  | ____/ ___|_   _|/ \\    ( _ ) 
+ \\___ \\|  _| | |\\/| |  _| \\___ \\ | | / _ \\   / _ \\ 
+  ___) | |___| |  | | |___ ___) || |/ ___ \\ | (_) |
+ |____/|_____|_|  |_|_____|____/ |_/_/   \\_\\ \\___/ 
+</pre>`;
+
+  function writeLine(text: string, colorClass = "text-text-primary", delay = 0) {
+    if (!terminalHistory) return;
+    
+    const div = document.createElement("div");
+    div.className = `font-mono text-sm leading-relaxed ${colorClass}`;
+    
+    if (text.startsWith("<pre")) {
+      div.innerHTML = text;
+    } else {
+      div.textContent = text;
+    }
+    
+    terminalHistory.appendChild(div);
+    
+    // Auto scroll to bottom
+    if (terminalScreen) {
+      terminalScreen.scrollTop = terminalScreen.scrollHeight;
+    }
+  }
+
+  function handleCommand(cmdRaw: string) {
+    const cmd = cmdRaw.trim().toLowerCase();
+    if (!cmd) return;
+
+    // Display user input
+    writeLine(`maduradev@semesta8:~$ ${cmdRaw}`, "text-terminal-green");
+
+    // Clear input
+    if (terminalInput) {
+      terminalInput.value = "";
+    }
+
+    // Check if quiz is active
+    if (quizState.active) {
+      handleQuizInput(cmd);
+      return;
+    }
+
+    // Route Commands
+    switch (cmd) {
+      case "help":
+        writeLine("Perintah yang tersedia:", "text-text-muted");
+        writeLine("  about    - Profil SEMESTA 8 (Sevima × Madura.dev)");
+        writeLine("  timeline - Jadwal milestone hackathon (Git branch style)");
+        writeLine("  prizes   - Informasi nominal dan benefit pemenang");
+        writeLine("  quiz     - Jalankan kuis kelayakan untuk dapatkan gelar hacker!");
+        writeLine("  register - Tautan pendaftaran resmi");
+        writeLine("  clear    - Bersihkan layar terminal");
+        break;
+        
+      case "about":
+        writeLine(ASCII_ART);
+        writeLine("SEMESTA 8 adalah program hackathon nasional kolaborasi antara SEVIMA (EdTech pioneer)");
+        writeLine("dan Madura.dev (komunitas developer lokal Madura). Fokus utama kami tahun ini adalah");
+        writeLine("menciptakan solusi teknologi inovatif guna mendigitalisasi dan merevolusi pendidikan.");
+        writeLine("Tema: 'EdTech Evolution for Future Education'", "text-terminal-yellow");
+        break;
+
+      case "timeline":
+        writeLine("GIT LOG BRANCH — JADWAL SELEKSI SEMESTA 8", "text-terminal-purple");
+        writeLine("● [commit 6e2a1] 22 Jun 2026: Pendaftaran dibuka + CBT Screening (*main)", "text-text-primary");
+        writeLine("● [commit 7f1b2] 15 Agu 2026: Penutupan Pendaftaran (*main)", "text-text-primary");
+        writeLine("● [commit 8c3d4] 05-20 Sep 2026: Hackathon per Kota (*feature/local-sprint)", "text-terminal-cyan");
+        writeLine("● [commit 9b5e6] 05 Okt 2026: Pengumuman Finalis (*feature/local-sprint)", "text-terminal-cyan");
+        writeLine("● [commit 0a7f8] 24-25 Okt 2026: Interview Final Nasional (*main)", "text-terminal-purple");
+        writeLine("● [merge dev-main] 28 Okt 2026: Pengumuman Juara & Awarding (*main)", "text-terminal-green");
+        break;
+
+      case "prizes":
+        writeLine("LEADERBOARD PRIZES — JSON VARIABLE", "text-terminal-yellow");
+        writeLine("const prizes = {", "text-text-muted");
+        writeLine("  1st_Winner: { nominal: 'Rp 10.000.000', perks: ['E-Cert', 'Net-working', 'C-Level Intro'] },", "text-terminal-yellow");
+        writeLine("  2nd_Winner: { nominal: 'Rp 7.500.000',  perks: ['E-Cert', 'Net-working'] },", "text-terminal-blue");
+        writeLine("  3rd_Winner: { nominal: 'Rp 5.000.000',  perks: ['E-Cert', 'Net-working'] }", "text-terminal-magenta");
+        writeLine("};", "text-text-muted");
+        break;
+
+      case "quiz":
+        startQuiz();
+        break;
+
+      case "register":
+        writeLine("Membuka browser ke form registrasi...", "text-terminal-green");
+        writeLine("-> Silakan daftar langsung melalui Maukuliah.com", "text-terminal-cyan");
+        writeLine("URL: https://maukuliah.com", "text-text-muted");
+        setTimeout(() => {
+          window.open("https://maukuliah.com", "_blank");
+        }, 800);
+        break;
+
+      case "clear":
+        if (terminalHistory) {
+          terminalHistory.innerHTML = "";
+        }
+        break;
+
+      default:
+        writeLine(`Command not found: '${cmdRaw}'. Type 'help' for available commands.`, "text-terminal-magenta");
+    }
+
+    if (terminalScreen) {
+      terminalScreen.scrollTop = terminalScreen.scrollHeight;
+    }
+  }
+
+  // Quiz logic implementation
+  function startQuiz() {
+    quizState.active = true;
+    quizState.step = 1;
+    quizState.answers = [];
+    
+    writeLine("---------------------------------------------------------", "text-text-muted");
+    writeLine("MEMULAI HACKER ELIGIBILITY QUIZ [3 QUESTIONS]", "text-terminal-magenta");
+    writeLine("Jawab dengan mengetik 'A' atau 'B' (atau gunakan tombol pintas)", "text-text-muted");
+    writeLine("Q1: Apa kepanjangan dari metode seleksi CBT?", "text-text-primary");
+    writeLine("   [A] Computer Based Test");
+    writeLine("   [B] Coding Benchmark Tool");
+  }
+
+  function handleQuizInput(input: string) {
+    const val = input.trim().toUpperCase();
+    if (val !== "A" && val !== "B") {
+      writeLine("Format salah. Silakan jawab 'A' atau 'B' saja.", "text-terminal-yellow");
+      return;
+    }
+
+    quizState.answers.push(val);
+
+    if (quizState.step === 1) {
+      quizState.step = 2;
+      writeLine("Q2: Apa tema utama solusi hackathon SEMESTA 8?", "text-text-primary");
+      writeLine("   [A] FinTech (Teknologi Finansial)");
+      writeLine("   [B] EdTech (Teknologi Pendidikan)");
+    } else if (quizState.step === 2) {
+      quizState.step = 3;
+      writeLine("Q3: Siapakah mitra komunitas developer di SEMESTA 8 di madura?", "text-text-primary");
+      writeLine("   [A] MaduraDev");
+      writeLine("   [B] SurabayaJS");
+    } else if (quizState.step === 3) {
+      evaluateQuiz();
+    }
+  }
+
+  function evaluateQuiz() {
+    quizState.active = false;
+    const ans = quizState.answers;
+    let score = 0;
+
+    if (ans[0] === "A") score++; // CBT = Computer Based Test
+    if (ans[1] === "B") score++; // EdTech
+    if (ans[2] === "A") score++; // Madura.dev
+
+    writeLine("---------------------------------------------------------", "text-text-muted");
+    writeLine("EVALUASI HACKER STATUS...", "text-terminal-cyan");
+    
+    let hackerClass = "";
+    let color = "";
+    if (score === 3) {
+      hackerClass = "🚀 ARCHITECT OF EDTECH (Grade S)";
+      color = "text-terminal-green";
+    } else if (score === 2) {
+      hackerClass = "💻 SENIOR DEVELOPER (Grade A)";
+      color = "text-terminal-cyan";
+    } else {
+      hackerClass = "🛡️ JUNIOR CODER (Grade B)";
+      color = "text-terminal-yellow";
+    }
+
+    writeLine(`SKOR ANDA: ${score} dari 3`, color);
+    writeLine(`HACKER DESIGNATION: ${hackerClass}`, color);
+    writeLine("Anda siap bergabung di SEMESTA 8! Ketik 'register' untuk mendaftar sekarang.", "text-text-primary");
+  }
+
+  // Handle Input keypress
+  terminalInput?.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+      handleCommand(terminalInput.value);
+    }
+  });
+
+  // Handle Quick Button Clicks
+  cmdButtons.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const cmd = btn.getAttribute("data-cmd");
+      if (cmd) {
+        if (quizState.active && (cmd === "a" || cmd === "b")) {
+          // If quiz is active, we can route A/B commands
+          handleCommand(cmd);
+        } else if (quizState.active) {
+          // Cancel quiz if other action clicked
+          quizState.active = false;
+          writeLine("[QUIZ CANCELLED] Menjalankan perintah baru.", "text-text-muted");
+          handleCommand(cmd);
+        } else {
+          handleCommand(cmd);
+        }
+      }
+    });
+  });
+
+  // Keep terminal focused on click anywhere in terminal
+  document.getElementById("terminal-screen")?.addEventListener("click", () => {
+    terminalInput?.focus();
+  });
+</script>

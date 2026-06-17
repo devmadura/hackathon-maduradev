@@ -1,0 +1,252 @@
+@import "tailwindcss";
+
+@theme {
+  --color-dark-bg: #030307;
+  --color-dark-surface: #0a0a12;
+  --color-dark-card: #0e0e1b;
+  --color-dark-border: #1a1a30;
+  
+  --color-terminal-green: #00ff66;
+  --color-terminal-cyan: #00f0ff;
+  --color-terminal-magenta: #ff0077;
+  --color-terminal-yellow: #f59e0b;
+  --color-terminal-orange: #ff8c00;
+  --color-terminal-purple: #8b5cf6;
+
+  --color-brand-blue: #00f0ff;
+  --color-brand-indigo: #6d28d9;
+  --color-brand-red: #ff0077;
+  --color-brand-gold: #f59e0b;
+
+  --color-text-primary: #f8fafc;
+  --color-text-muted: #64748b;
+  --font-sans: "Plus Jakarta Sans", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+}
+
+/* ── Base Reset & Layout ────────────────────────── */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--color-dark-bg);
+  color: var(--color-text-primary);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background-color: var(--color-terminal-green);
+  color: #000;
+}
+
+/* ── Cyber-Grid Background ────────────────────── */
+.cyber-grid {
+  position: relative;
+  background-size: 50px 50px;
+  background-image: 
+    linear-gradient(to right, rgba(26, 26, 48, 0.5) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(26, 26, 48, 0.5) 1px, transparent 1px);
+  background-position: center;
+}
+
+/* Diagonal stripe pattern for highlights */
+.tech-stripes {
+  background-image: repeating-linear-gradient(
+    45deg,
+    rgba(26, 26, 48, 0.2),
+    rgba(26, 26, 48, 0.2) 10px,
+    transparent 10px,
+    transparent 20px
+  );
+}
+
+/* ── Terminal/IDE Utilities ────────────────────── */
+.terminal-window {
+  background: var(--color-dark-surface);
+  border: 1px solid var(--color-dark-border);
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.7);
+  position: relative;
+}
+
+.terminal-header {
+  height: 36px;
+  background: #06060c;
+  border-bottom: 1px solid var(--color-dark-border);
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+}
+
+.terminal-dots {
+  display: flex;
+  gap: 6px;
+}
+
+.terminal-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.terminal-dot-close { background-color: #ef4444; }
+.terminal-dot-minimize { background-color: #eab308; }
+.terminal-dot-maximize { background-color: #22c55e; }
+
+/* Cursor typing blink */
+.cursor-blink::after {
+  content: "▊";
+  color: var(--color-terminal-green);
+  animation: blink-anim 1s step-end infinite;
+}
+
+@keyframes blink-anim {
+  50% { opacity: 0; }
+}
+
+/* ── Custom Cyber Buttons (Clip Path & Glow) ───── */
+.cyber-button {
+  position: relative;
+  font-family: var(--font-mono);
+  clip-path: polygon(8px 0%, 100% 0%, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0% 100%, 0% 8px);
+  transition: all 0.2s ease-in-out;
+}
+
+.cyber-button-cyan {
+  background: rgba(0, 240, 255, 0.1);
+  border: 1px solid var(--color-terminal-cyan);
+  color: var(--color-terminal-cyan);
+}
+
+.cyber-button-cyan:hover {
+  background: var(--color-terminal-cyan);
+  color: #030307;
+  box-shadow: 0 0 15px rgba(0, 240, 255, 0.4);
+}
+
+.cyber-button-green {
+  background: rgba(0, 255, 102, 0.1);
+  border: 1px solid var(--color-terminal-green);
+  color: var(--color-terminal-green);
+}
+
+.cyber-button-green:hover {
+  background: var(--color-terminal-green);
+  color: #030307;
+  box-shadow: 0 0 15px rgba(0, 255, 102, 0.4);
+}
+
+/* ── Glitch Text Effect ────────────────────────── */
+.glitch-text {
+  position: relative;
+  animation: glitch-skew 1s infinite linear alternate-reverse;
+}
+
+.glitch-text::before,
+.glitch-text::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--color-dark-bg);
+}
+
+.glitch-text::before {
+  left: 2px;
+  text-shadow: -1px 0 var(--color-terminal-cyan);
+  clip: rect(44px, 450px, 56px, 0);
+  animation: glitch-anim 5s infinite linear alternate-reverse;
+}
+
+.glitch-text::after {
+  left: -2px;
+  text-shadow: -1px 0 var(--color-terminal-magenta);
+  clip: rect(85px, 450px, 140px, 0);
+  animation: glitch-anim2 5s infinite linear alternate-reverse;
+}
+
+@keyframes glitch-anim {
+  0% { clip: rect(15px, 9999px, 66px, 0); }
+  100% { clip: rect(34px, 9999px, 55px, 0); }
+}
+
+@keyframes glitch-anim2 {
+  0% { clip: rect(70px, 9999px, 105px, 0); }
+  100% { clip: rect(12px, 9999px, 85px, 0); }
+}
+
+@keyframes glitch-skew {
+  0% { transform: skew(0deg); }
+  10% { transform: skew(0deg); }
+  20% { transform: skew(-1deg); }
+  30% { transform: skew(1deg); }
+  40% { transform: skew(0deg); }
+  100% { transform: skew(0deg); }
+}
+
+/* ── Scrollbar ──────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-dark-bg);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-dark-border);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-terminal-cyan);
+}
+
+/* ── Scanline effect ────────────────────────────── */
+.scanlines {
+  position: relative;
+  overflow: hidden;
+}
+
+.scanlines::before {
+  content: " ";
+  display: block;
+  position: absolute;
+  top: 0; left: 0; bottom: 0; right: 0;
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.35) 50%);
+  background-size: 100% 4px;
+  z-index: 10;
+  pointer-events: none;
+  opacity: 0.4;
+}
+
+/* ── Code Blocks / Dashboards ────────────────────── */
+.code-card {
+  background: rgba(10, 10, 18, 0.7);
+  border: 1px solid var(--color-dark-border);
+  border-radius: 4px;
+  font-family: var(--font-mono);
+  position: relative;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.code-card::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 2px;
+  background: linear-gradient(90deg, var(--color-terminal-cyan), transparent);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.code-card:hover::before {
+  opacity: 1;
+}
+
+.code-card:hover {
+  border-color: rgba(0, 240, 255, 0.3);
+  box-shadow: 0 8px 30px -10px rgba(0, 240, 255, 0.1);
+  transform: translateY(-2px);
+}

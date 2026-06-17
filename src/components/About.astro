@@ -1,0 +1,92 @@
+---
+// About.astro
+const stats = [
+  { label: "peserta_registered", value: "1,000+" },
+  { label: "coverage_cities", value: "MULTi_KOTA" },
+  { label: "target_cluster", value: "EDTECH_DEV" },
+  { label: "grant_funding", value: "JUTAAN_IDR" },
+];
+---
+
+<section id="about" class="relative py-24 md:py-32 px-4 border-t border-dark-border/40 tech-stripes">
+  <div class="max-w-6xl mx-auto relative z-10">
+    
+    <!-- Header Block -->
+    <div data-reveal="up" class="text-left border-l-2 border-terminal-cyan pl-6 max-w-3xl mb-16 font-mono">
+      <p class="text-xs uppercase tracking-widest text-terminal-cyan mb-2">// DETECTING_ENV: ABOUT_US.md</p>
+      <h2 class="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-text-primary uppercase">
+        System Architecture: <span class="text-transparent bg-clip-text bg-gradient-to-r from-terminal-cyan to-terminal-purple">SEMESTA 8</span>
+      </h2>
+      <p class="mt-4 text-sm text-text-muted leading-relaxed font-sans normal-case">
+        SEMESTA adalah inkubator teknologi tahunan yang diselenggarakan oleh <strong class="text-text-primary">SEVIMA</strong> berkolaborasi dengan komunitas developer lokal <strong class="text-text-primary">Madura.dev</strong>. Di edisi ke-8 ini, fokus utama tertuju pada pengembangan solusi inovatif untuk mendigitalisasi perguruan tinggi Indonesia.
+      </p>
+    </div>
+
+    <!-- Organizer Specs Configuration Grid -->
+    <div data-reveal="up" class="grid md:grid-cols-2 gap-8 mb-16 font-mono">
+      <!-- Sevima Node Card -->
+      <div class="code-card rounded p-6 bg-dark-surface/90 border border-dark-border">
+        <!-- Card Header Info -->
+        <div class="flex items-center justify-between border-b border-dark-border pb-4 mb-4">
+          <div class="flex items-center gap-2">
+            <span class="w-2.5 h-2.5 bg-terminal-cyan rounded-full animate-pulse"></span>
+            <span class="text-xs text-text-primary">MODULE_ID: SEVIMA_CORE</span>
+          </div>
+          <span class="text-[10px] text-terminal-cyan">SYS: ONLINE</span>
+        </div>
+        
+        <!-- Metadata Spec -->
+        <div class="text-xs space-y-1 mb-4 text-text-muted">
+          <p><span class="text-terminal-cyan">NAME:</span> PT Sentra Vidya Utama</p>
+          <p><span class="text-terminal-cyan">FOCUS:</span> Educational Cloud & Campus ERP Ecosystem</p>
+          <p><span class="text-terminal-cyan">COVERAGE:</span> 900+ Higher Educations in Indonesia</p>
+        </div>
+
+        <p class="text-xs leading-relaxed text-text-muted font-sans border-t border-dark-border/40 pt-4">
+          Sebagai pionir teknologi pendidikan tinggi di Indonesia, SEVIMA menyediakan platform integrasi sistem akademik kampus. Melalui program SEMESTA 8, SEVIMA berkomitmen menyaring inovasi segar dari developer muda guna merumuskan masa depan EdTech Indonesia.
+        </p>
+      </div>
+
+      <!-- Madura.dev Node Card -->
+      <div class="code-card rounded p-6 bg-dark-surface/90 border border-dark-border">
+        <!-- Card Header Info -->
+        <div class="flex items-center justify-between border-b border-dark-border pb-4 mb-4">
+          <div class="flex items-center gap-2">
+            <span class="w-2.5 h-2.5 bg-terminal-magenta rounded-full animate-pulse"></span>
+            <span class="text-xs text-text-primary">MODULE_ID: MADURADEV_COMM</span>
+          </div>
+          <span class="text-[10px] text-terminal-magenta">SYS: ACTIVE</span>
+        </div>
+        
+        <!-- Metadata Spec -->
+        <div class="text-xs space-y-1 mb-4 text-text-muted">
+          <p><span class="text-terminal-magenta">NAME:</span> Komunitas Developer Madura</p>
+          <p><span class="text-terminal-magenta">FOCUS:</span> Regional Tech Empowerment & Collaboration</p>
+          <p><span class="text-terminal-magenta">ACTIVITIES:</span> Tech-Talks, Open Source, Hackathons</p>
+        </div>
+
+        <p class="text-xs leading-relaxed text-text-muted font-sans border-t border-dark-border/40 pt-4">
+          Wadah kolaboratif untuk mempercepat transformasi talenta digital di wilayah Madura dan sekitarnya. Madura.dev aktif melatih talenta lokal melalui lokakarya, kompetisi coding, dan kolaborasi nyata untuk menghubungkan talenta daerah dengan industri nasional.
+        </p>
+      </div>
+    </div>
+
+    <!-- Stats Dashboard Readout -->
+    <div data-reveal="up" class="grid grid-cols-2 md:grid-cols-4 gap-4 font-mono text-left">
+      {stats.map((stat) => (
+        <div class="p-5 bg-dark-surface/60 border border-dark-border rounded flex flex-col justify-between hover:border-terminal-cyan/50 transition-colors">
+          <div class="text-[9px] text-text-muted uppercase tracking-wider mb-2 flex items-center justify-between">
+            <span>{stat.label}</span>
+            <span class="text-terminal-green">✓</span>
+          </div>
+          <div class="text-xl sm:text-2xl font-extrabold text-terminal-green">
+            {stat.value}
+          </div>
+          <div class="w-full bg-dark-border h-1 mt-4 rounded-full overflow-hidden">
+            <div class="bg-terminal-green h-full w-[75%] rounded-full"></div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

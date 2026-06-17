@@ -1,0 +1,97 @@
+---
+// Prizes.astro
+const prizes = [
+  {
+    place: "1",
+    label: "Juara_1st",
+    nominal: "Rp 10.000.000",
+    glow: "rgba(0, 255, 102, 0.15)",
+    border: "border-terminal-green/30",
+    textClass: "text-terminal-green",
+    badge: "bg-terminal-green/10 text-terminal-green border-terminal-green/20",
+    benefits: ["E-certificate resmi SEVIMA", "Opportunity Letter", "Eksposur project ke kampus mitra", "Networking dengan C-level"],
+    indicator: "[ CORE_NODE_01 ]",
+  },
+  {
+    place: "2",
+    label: "Juara_2nd",
+    nominal: "Rp 7.500.000",
+    glow: "rgba(0, 240, 255, 0.15)",
+    border: "border-terminal-cyan/30",
+    textClass: "text-terminal-cyan",
+    badge: "bg-terminal-cyan/10 text-terminal-cyan border-terminal-cyan/20",
+    benefits: ["E-certificate resmi SEVIMA", "Opportunity Letter", "Eksposur project ke kampus mitra", "Networking dengan C-level"],
+    indicator: "[ NODE_02_SUB ]",
+  },
+  {
+    place: "3",
+    label: "Juara_3rd",
+    nominal: "Rp 5.000.000",
+    glow: "rgba(255, 0, 119, 0.15)",
+    border: "border-terminal-magenta/30",
+    textClass: "text-terminal-magenta",
+    badge: "bg-terminal-magenta/10 text-terminal-magenta border-terminal-magenta/20",
+    benefits: ["E-certificate resmi SEVIMA", "Opportunity Letter", "Eksposur project ke kampus mitra", "Networking dengan C-level"],
+    indicator: "[ NODE_03_MIN ]",
+  },
+];
+---
+
+<section id="prizes" class="relative py-24 md:py-32 px-4 border-t border-dark-border/40 tech-stripes">
+  <div class="max-w-6xl mx-auto">
+    <!-- Header Block -->
+    <div data-reveal="up" class="text-left border-l-2 border-terminal-green pl-6 max-w-3xl mb-20 font-mono">
+      <p class="text-xs uppercase tracking-widest text-terminal-green mb-2">// RESOURCE_POOL: REWARDS.json</p>
+      <h2 class="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-text-primary uppercase">
+        Grant Funding & <span class="text-transparent bg-clip-text bg-gradient-to-r from-terminal-green to-terminal-cyan">Hacker Perks</span>
+      </h2>
+      <p class="mt-4 text-sm text-text-muted max-w-xl font-sans normal-case">
+        Hadiah dana pengembangan, rekognisi portofolio, sertifikasi resmi, serta koneksi karir eksklusif bersama jajaran C-level SEVIMA.
+      </p>
+    </div>
+
+    <!-- Prize server blades (podium layout on large screens) -->
+    <div class="grid md:grid-cols-3 gap-8 items-end font-mono">
+      {prizes.map((prize) => (
+        <div
+          class={`prize-card code-card rounded bg-dark-surface/90 border ${prize.border} p-6 sm:p-8 text-left hover:scale-[1.02] transition-all duration-300 ${prize.place === "1" ? "md:-translate-y-8" : ""}`}
+          style={`box-shadow: 0 10px 40px -15px ${prize.glow}`}
+        >
+          <!-- Hardware tag -->
+          <div class="flex items-center justify-between text-[9px] text-text-muted border-b border-dark-border pb-3 mb-5">
+            <span>{prize.indicator}</span>
+            <span class={prize.textClass}>ONLINE</span>
+          </div>
+
+          <!-- Title object -->
+          <div class="space-y-1 mb-6">
+            <span class={`inline-block px-2.5 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider border ${prize.badge}`}>
+              {prize.label}
+            </span>
+            <p class="text-xs text-text-muted mt-2">// CASH_GRANT_VALUE</p>
+            <p class={`text-2xl sm:text-3xl font-extrabold tracking-tight ${prize.textClass}`}>
+              {prize.nominal}
+            </p>
+          </div>
+
+          <!-- Benefits JSON Mock -->
+          <div class="border-t border-dark-border/40 pt-4 space-y-3">
+            <p class="text-[10px] text-text-muted">// perk_allocations = [</p>
+            {prize.benefits.map((b) => (
+              <div class="flex items-start gap-2.5 pl-2 text-xs">
+                <span class="text-terminal-yellow">"✔"</span>
+                <span class="text-text-muted leading-relaxed font-sans">{b},</span>
+              </div>
+            ))}
+            <p class="text-[10px] text-text-muted">]</p>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <!-- Note footer -->
+    <p data-reveal="up" class="text-center text-[10px] text-text-muted mt-12 font-mono uppercase tracking-wider">
+      * system_notice: Nominal hadiah dan pendanaan mengikuti regulasi panitia penyelenggara.
+    </p>
+  </div>
+</section>

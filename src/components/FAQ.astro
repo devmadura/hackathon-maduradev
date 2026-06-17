@@ -1,0 +1,113 @@
+---
+// FAQ.astro
+const faqs = [
+  {
+    q: "Apa itu SEMESTA 8?",
+    a: "SEMESTA 8 adalah program hackathon tahunan yang diselenggarakan oleh SEVIMA berkolaborasi dengan Madura.dev. Program ini terbuka untuk mahasiswa dan developer Indonesia yang ingin membangun solusi inovatif di bidang teknologi pendidikan (EdTech).",
+  },
+  {
+    q: "Siapa saja yang bisa ikut?",
+    a: "SEMESTA 8 terbuka untuk mahasiswa aktif dan developer/fresh graduate di Indonesia. Tidak ada batasan jurusan — yang penting kamu punya passion untuk membangun solusi teknologi.",
+  },
+  {
+    q: "Bagaimana cara mendaftar?",
+    a: "Pendaftaran dilakukan melalui platform MauKuliah (maukuliah.com). Kamu perlu mengisi formulir pendaftaran dan menyelesaikan CBT screening sebagai tahap seleksi awal.",
+  },
+  {
+    q: "Apakah ada biaya pendaftaran?",
+    a: "Tidak! Pendaftaran SEMESTA 8 sepenuhnya gratis. Seluruh biaya akomodasi untuk babak final juga akan ditanggung oleh SEVIMA.",
+  },
+  {
+    q: "Apa itu CBT Screening?",
+    a: "CBT (Computer Based Test) Screening adalah tes berbasis komputer yang menjadi salah satu komponen seleksi awal. Tes ini digunakan untuk mengukur kemampuan dasar dan minat peserta di bidang teknologi.",
+  },
+  {
+    q: "Bolehkan ikut berkelompok?",
+    a: "Format pelaksanaan hackathon akan diinformasikan lebih lanjut menjelang tanggal acara. Biasanya peserta bisa individu maupun tim kecil. Pantau informasi terbaru di channel resmi SEMESTA.",
+  },
+  {
+    q: "Di kota mana saja hackathon dilaksanakan?",
+    a: "Hackathon akan dilaksanakan di beberapa kota di Indonesia. Daftar kota lengkap akan diumumkan setelah proses rekap CBT dan seleksi peserta per kota selesai pada pertengahan Agustus 2026.",
+  },
+  {
+    q: "Apa saja benefit selain hadiah uang?",
+    a: "Selain hadiah uang, pemenang akan mendapatkan e-certificate resmi dari SEVIMA, opportunity letter, eksposur project ke kampus-kampus mitra, serta kesempatan networking langsung dengan C-level eksekutif SEVIMA.",
+  },
+];
+---
+
+<section id="faq" class="relative py-24 md:py-32 px-4 border-t border-dark-border/40 bg-dark-bg/30">
+  <div class="max-w-3xl mx-auto">
+    
+    <!-- Header Block -->
+    <div data-reveal="up" class="text-left border-l-2 border-terminal-magenta pl-6 max-w-3xl mb-20 font-mono">
+      <p class="text-xs uppercase tracking-widest text-terminal-magenta mb-2">// QUERY_DB: FAQ_MODULE.ts</p>
+      <h2 class="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-text-primary uppercase">
+        Frequently Asked <span class="text-transparent bg-clip-text bg-gradient-to-r from-terminal-magenta to-terminal-purple">Questions</span>
+      </h2>
+      <p class="mt-4 text-sm text-text-muted max-w-xl font-sans normal-case">
+        Punya pertanyaan seputar kualifikasi, timeline, atau benefit? Jalankan fungsi di bawah untuk mengekstrak jawabannya.
+      </p>
+    </div>
+
+    <!-- Accordion / Code Functions List -->
+    <div data-reveal="up" class="space-y-4 font-mono">
+      {faqs.map((faq, i) => {
+        const idNum = String(i + 1).padStart(2, "0");
+        return (
+          <div class="faq-item code-card rounded bg-dark-surface/50 border border-dark-border overflow-hidden">
+            <button
+              class="faq-toggle w-full flex items-center justify-between px-5 py-4.5 text-left hover:bg-dark-surface transition-colors cursor-pointer"
+              aria-expanded="false"
+            >
+              <div class="flex flex-wrap items-center gap-1 sm:gap-2 text-xs sm:text-sm">
+                <span class="text-terminal-magenta">const</span>
+                <span class="text-terminal-cyan">faq_{idNum}</span>
+                <span class="text-text-primary">= () =&gt; &#123;</span>
+                <span class="text-text-muted text-[10px] sm:text-xs font-sans italic ml-1 sm:ml-4">// {faq.q}</span>
+              </div>
+              <span class="faq-icon-text text-[10px] sm:text-xs text-terminal-cyan font-bold select-none">[ EXPAND ]</span>
+            </button>
+            
+            <div class="faq-content hidden px-8 pb-5 pt-3 bg-[#05050c]/50 border-t border-dark-border/20">
+              <div class="text-[10px] text-text-muted mb-2">// answer_payload:</div>
+              <div class="pl-4 border-l border-terminal-cyan/30 text-xs sm:text-sm text-text-muted leading-relaxed font-sans">
+                {faq.a}
+              </div>
+              <div class="text-xs sm:text-sm text-text-primary mt-4">&#125;;</div>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  </div>
+</section>
+
+<script>
+  document.querySelectorAll(".faq-toggle").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const item = btn.closest(".faq-item");
+      const content = item?.querySelector(".faq-content");
+      const iconText = btn.querySelector(".faq-icon-text");
+      const isOpen = !content?.classList.contains("hidden");
+
+      // Close all
+      document.querySelectorAll(".faq-item").forEach((el) => {
+        el.querySelector(".faq-content")?.classList.add("hidden");
+        const toggleBtn = el.querySelector(".faq-toggle");
+        if (toggleBtn) {
+          toggleBtn.setAttribute("aria-expanded", "false");
+          const textEl = toggleBtn.querySelector(".faq-icon-text");
+          if (textEl) textEl.textContent = "[ EXPAND ]";
+        }
+      });
+
+      // Toggle current
+      if (!isOpen) {
+        content?.classList.remove("hidden");
+        btn.setAttribute("aria-expanded", "true");
+        if (iconText) iconText.textContent = "[ COLLAPSE ]";
+      }
+    });
+  });
+</script>

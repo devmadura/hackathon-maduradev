@@ -1,0 +1,89 @@
+---
+// Footer.astro
+const socialLinks = [
+  { label: "Instagram", href: "https://instagram.com/maduradev", code: "INSTAGRAM" },
+  { label: "LinkedIn", href: "https://linkedin.com/company/maduradev", code: "LINKEDIN" },
+  { label: "Twitter", href: "https://twitter.com/maduradev", code: "TWITTER" },
+];
+---
+
+<footer class="border-t border-dark-border bg-dark-surface/50 py-16 px-4 sm:px-6 lg:px-8 font-mono select-none">
+  <div class="max-w-6xl mx-auto">
+    <div class="grid md:grid-cols-12 gap-10 border-b border-dark-border/40 pb-12 mb-12 text-left">
+      
+      <!-- Brand & Description -->
+      <div class="md:col-span-6 space-y-4">
+        <a href="/" class="text-base sm:text-lg font-bold text-text-primary tracking-tight">
+          SEVIMA × MADURA<span class="text-terminal-magenta">Dev</span>
+        </a>
+        <p class="text-xs text-text-muted leading-relaxed max-w-sm font-sans normal-case">
+          Inkubator & hackathon kolaboratif tingkat nasional oleh SEVIMA × Madura.dev. Mari bersama membangun terobosan teknologi pendidikan demi kemajuan sistem akademik Indonesia.
+        </p>
+        <div class="flex items-center gap-3 pt-2">
+          {socialLinks.map((s) => (
+            <a
+              href={s.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="px-2.5 py-1 rounded border border-dark-border bg-dark-card hover:border-terminal-cyan hover:text-terminal-cyan text-[10px] transition-all"
+              aria-label={s.label}
+            >
+              [{s.code}]
+            </a>
+          ))}
+        </div>
+      </div>
+
+      <!-- Quick Links -->
+      <div class="md:col-span-3 space-y-4">
+        <h4 class="text-xs font-bold text-terminal-cyan uppercase tracking-wider">// Navigation_Tree</h4>
+        <div class="space-y-2 text-xs">
+          <a href="#about" class="block text-text-muted hover:text-terminal-cyan transition-colors flex items-center gap-1">
+            <span>&gt;</span> <span>~/tentang</span>
+          </a>
+          <a href="#timeline" class="block text-text-muted hover:text-terminal-cyan transition-colors flex items-center gap-1">
+            <span>&gt;</span> <span>~/timeline</span>
+          </a>
+          <a href="#prizes" class="block text-text-muted hover:text-terminal-cyan transition-colors flex items-center gap-1">
+            <span>&gt;</span> <span>~/hadiah</span>
+          </a>
+          <a href="#faq" class="block text-text-muted hover:text-terminal-cyan transition-colors flex items-center gap-1">
+            <span>&gt;</span> <span>~/faq</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Contact -->
+      <div class="md:col-span-3 space-y-4">
+        <h4 class="text-xs font-bold text-terminal-cyan uppercase tracking-wider">// Sys_Contact</h4>
+        <div class="space-y-2 text-xs">
+          <a
+            href="mailto:info.maduradev@gmail.com"
+            class="flex items-center gap-2 text-text-muted hover:text-terminal-cyan transition-colors"
+          >
+            <span>&gt;</span> mail: info.maduradev@gmail.com
+          </a>
+          <span class="block text-text-muted">
+            <span>&gt;</span> loc: Madura, ID
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom Status Bar -->
+    <div class="flex flex-col md:flex-row items-center justify-between gap-4 text-[10px] text-text-muted border border-dark-border/40 p-4 bg-dark-surface rounded">
+      <div class="flex flex-wrap items-center gap-3">
+        <span class="text-terminal-green">● CLIENT_SYS_OK</span>
+        <span class="hidden sm:inline text-dark-border">|</span>
+        <span>BUILD_REV: c82d9a1</span>
+        <span class="hidden sm:inline text-dark-border">|</span>
+        <span>TZ: UTC+7</span>
+      </div>
+      <div class="flex flex-wrap items-center gap-3">
+        <span>© 2026 SEMESTA 8 — SEVIMA × MADURADEV</span>
+        <span class="hidden sm:inline text-dark-border">|</span>
+        <span class="font-sans normal-case text-[9px]">Dibuat dengan <span class="text-terminal-magenta">❤</span> untuk developer Madura</span>
+      </div>
+    </div>
+  </div>
+</footer>

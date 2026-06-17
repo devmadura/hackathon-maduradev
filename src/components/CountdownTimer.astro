@@ -1,0 +1,86 @@
+---
+// Target: 15 Agustus 2026 23:59:59 WIB (UTC+7) → UTC: 16:59:59
+const targetDate = new Date("2026-08-15T23:59:59+07:00").getTime();
+---
+
+<div id="hero-countdown" class="flex items-center justify-center gap-3 sm:gap-4 md:gap-6 mt-8">
+  <div class="countdown-unit text-center">
+    <div class="glass-card rounded-xl w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 flex items-center justify-center">
+      <span id="cd-days" class="text-2xl sm:text-3xl md:text-4xl font-bold font-mono text-text-primary">00</span>
+    </div>
+    <span class="text-xs text-text-muted mt-2 block uppercase tracking-wider">Hari</span>
+  </div>
+
+  <span class="text-text-muted text-2xl font-light self-start mt-5 md:mt-6">:</span>
+
+  <div class="countdown-unit text-center">
+    <div class="glass-card rounded-xl w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 flex items-center justify-center">
+      <span id="cd-hours" class="text-2xl sm:text-3xl md:text-4xl font-bold font-mono text-text-primary">00</span>
+    </div>
+    <span class="text-xs text-text-muted mt-2 block uppercase tracking-wider">Jam</span>
+  </div>
+
+  <span class="text-text-muted text-2xl font-light self-start mt-5 md:mt-6">:</span>
+
+  <div class="countdown-unit text-center">
+    <div class="glass-card rounded-xl w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 flex items-center justify-center">
+      <span id="cd-mins" class="text-2xl sm:text-3xl md:text-4xl font-bold font-mono text-text-primary">00</span>
+    </div>
+    <span class="text-xs text-text-muted mt-2 block uppercase tracking-wider">Menit</span>
+  </div>
+
+  <span class="text-text-muted text-2xl font-light self-start mt-5 md:mt-6">:</span>
+
+  <div class="countdown-unit text-center">
+    <div class="glass-card rounded-xl w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 flex items-center justify-center">
+      <span id="cd-secs" class="text-2xl sm:text-3xl md:text-4xl font-bold font-mono text-brand-red">00</span>
+    </div>
+    <span class="text-xs text-text-muted mt-2 block uppercase tracking-wider">Detik</span>
+  </div>
+</div>
+
+<script define:vars={{ targetDate }}>
+  const daysEl = document.getElementById("cd-days");
+  const hoursEl = document.getElementById("cd-hours");
+  const minsEl = document.getElementById("cd-mins");
+  const secsEl = document.getElementById("cd-secs");
+
+  let prev = { d: "", h: "", m: "", s: "" };
+
+  function pad(n) {
+    return String(n).padStart(2, "0");
+  }
+
+  function animateFlip(el) {
+    el.style.transition = "none";
+    el.style.transform = "translateY(-8px)";
+    el.style.opacity = "0";
+    requestAnimationFrame(() => {
+      el.style.transition = "transform 0.25s ease-out, opacity 0.25s ease-out";
+      el.style.transform = "translateY(0)";
+      el.style.opacity = "1";
+    });
+  }
+
+  function tick() {
+    const now = Date.now();
+    let diff = targetDate - now;
+
+    if (diff <= 0) {
+      diff = 0;
+    }
+
+    const d = String(Math.floor(diff / (1000 * 60 * 60 * 24))).padStart(2, "0");
+    const h = String(Math.floor((diff / (1000 * 60 * 60)) % 24)).padStart(2, "0");
+    const m = String(Math.floor((diff / (1000 * 60)) % 60)).padStart(2, "0");
+    const s = String(Math.floor((diff / 1000) % 60)).padStart(2, "0");
+
+    if (d !== prev.d) { daysEl.textContent = d; animateFlip(daysEl); prev.d = d; }
+    if (h !== prev.h) { hoursEl.textContent = h; animateFlip(hoursEl); prev.h = h; }
+    if (m !== prev.m) { minsEl.textContent = m; animateFlip(minsEl); prev.m = m; }
+    if (s !== prev.s) { secsEl.textContent = s; animateFlip(secsEl); prev.s = s; }
+  }
+
+  tick();
+  setInterval(tick, 1000);
+</script>

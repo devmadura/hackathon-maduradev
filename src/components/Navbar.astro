@@ -1,0 +1,113 @@
+---
+// Navbar.astro
+const navLinks = [
+  { label: "Tentang", href: "#about", num: "01" },
+  { label: "Timeline", href: "#timeline", num: "02" },
+  { label: "Hadiah", href: "#prizes", num: "03" },
+  { label: "FAQ", href: "#faq", num: "04" },
+];
+---
+
+<nav
+  id="navbar"
+  class="fixed top-0 left-0 w-full z-50 transition-all duration-300 border-b border-transparent bg-dark-bg/80 backdrop-blur-md"
+>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16 border-b border-dark-border/40">
+    <!-- Logo & Tech Badge -->
+    <a href="/" class="flex items-center gap-3 group">
+      <span class="font-mono text-sm sm:text-base font-bold text-text-primary tracking-tight">
+        SEVIMA x MADURA<span class="text-terminal-cyan">Dev</span>
+      </span>
+      
+      <!-- System Signal -->
+      <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-mono text-terminal-green bg-terminal-green/10 border border-terminal-green/20">
+        <span class="w-1.5 h-1.5 rounded-full bg-terminal-green animate-pulse"></span>
+        [ONLINE]
+      </span>
+    </a>
+
+    <!-- Desktop nav -->
+    <div class="hidden md:flex items-center gap-8 font-mono">
+      {navLinks.map((link) => (
+        <a
+          href={link.href}
+          class="text-xs text-text-muted hover:text-terminal-cyan transition-colors duration-200 flex items-center gap-1 group"
+        >
+          <span class="text-terminal-magenta group-hover:text-terminal-cyan">{link.num}.</span>
+          <span>{link.label}</span>
+        </a>
+      ))}
+      <a
+        href="#hero"
+        class="cyber-button cyber-button-cyan px-4 py-1.5 text-xs font-semibold"
+      >
+        [ DAFTAR_SEKARANG ]
+      </a>
+    </div>
+
+    <!-- Mobile hamburger -->
+    <button
+      id="mobile-menu-btn"
+      class="md:hidden flex flex-col gap-1.5 p-2 border border-dark-border rounded bg-dark-surface"
+      aria-label="Toggle menu"
+    >
+      <span class="block w-5 h-0.5 bg-text-primary transition-transform duration-200"></span>
+      <span class="block w-5 h-0.5 bg-text-primary transition-opacity duration-200"></span>
+      <span class="block w-5 h-0.5 bg-text-primary transition-transform duration-200"></span>
+    </button>
+  </div>
+
+  <!-- Mobile menu -->
+  <div
+    id="mobile-menu"
+    class="hidden md:hidden border-t border-dark-border bg-dark-surface/95 backdrop-blur-md"
+  >
+    <div class="px-4 py-6 flex flex-col gap-4 font-mono text-sm">
+      {navLinks.map((link) => (
+        <a
+          href={link.href}
+          class="text-text-muted hover:text-terminal-cyan py-2 transition-colors flex items-center gap-2"
+        >
+          <span class="text-terminal-magenta">{link.num}.</span>
+          <span>{link.label}</span>
+        </a>
+      ))}
+      <a
+        href="#hero"
+        class="cyber-button cyber-button-cyan px-4 py-2 text-center text-xs font-semibold mt-3"
+      >
+        [ DAFTAR_SEKARANG ]
+      </a>
+    </div>
+  </div>
+</nav>
+
+<script>
+  const btn = document.getElementById("mobile-menu-btn");
+  const menu = document.getElementById("mobile-menu");
+  btn?.addEventListener("click", () => {
+    menu?.classList.toggle("hidden");
+    btn.classList.toggle("active");
+  });
+
+  // Close mobile menu on link click
+  menu?.querySelectorAll("a").forEach((a) => {
+    a.addEventListener("click", () => menu?.classList.add("hidden"));
+  });
+
+  // Change nav background on scroll
+  const navbar = document.getElementById("navbar");
+  window.addEventListener("scroll", () => {
+    if (window.scrollY > 20) {
+      navbar?.classList.add("bg-dark-surface/95");
+      navbar?.classList.add("border-dark-border");
+      navbar?.classList.remove("bg-dark-bg/80");
+      navbar?.classList.remove("border-transparent");
+    } else {
+      navbar?.classList.remove("bg-dark-surface/95");
+      navbar?.classList.remove("border-dark-border");
+      navbar?.classList.add("bg-dark-bg/80");
+      navbar?.classList.add("border-transparent");
+    }
+  });
+</script>
