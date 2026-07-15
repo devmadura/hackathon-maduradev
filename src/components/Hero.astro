@@ -75,14 +75,13 @@ import TerminalConsole from "./TerminalConsole.astro";
 
       <!-- Action Buttons -->
       <div id="hero-ctas" class="mt-8 flex flex-wrap gap-4">
-        <a
-          href="#"
-          target="_blank"
-          rel="noopener noreferrer"
+        <button
+          id="open-referral-modal"
+          type="button"
           class="cyber-button cyber-button-cyan px-6 py-3 text-sm font-semibold"
         >
           [ EXEC_REGISTRATION ]
-        </a>
+        </button>
         <a
           href="#about"
           class="cyber-button cyber-button-green px-6 py-3 text-sm font-semibold"
@@ -104,4 +103,125 @@ import TerminalConsole from "./TerminalConsole.astro";
     <span class="hidden sm:inline">DB_CONNECT: OK | SYS_LOAD: 0.12</span>
     <span>MADURADEV // 2026</span>
   </div>
+
+  <!-- Referral Code Modal -->
+  <div
+    id="referral-modal-overlay"
+    class="fixed inset-0 z-50 hidden items-center justify-center bg-black/80 backdrop-blur-sm px-4"
+  >
+    <div
+      id="referral-modal"
+      class="relative w-full max-w-md bg-dark-card border border-dark-border rounded-lg cyber-grid overflow-hidden"
+    >
+      <!-- top accent line -->
+      <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-terminal-cyan/40 to-transparent"></div>
+
+      <!-- close button -->
+      <button
+        id="close-referral-modal"
+        type="button"
+        aria-label="Close"
+        class="absolute top-3 right-3 font-mono text-xs text-text-muted hover:text-terminal-magenta transition-colors"
+      >
+        [ X ]
+      </button>
+
+      <div class="p-6 sm:p-8 flex flex-col items-start text-left">
+        <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded bg-dark-surface border border-dark-border font-mono text-xs text-text-muted mb-4">
+          <span class="w-1.5 h-1.5 rounded-full bg-terminal-yellow animate-ping"></span>
+          <span class="text-terminal-yellow">REFERRAL_CODE.DAT</span>
+        </div>
+
+        <h3 class="font-mono text-lg sm:text-xl font-bold text-text-primary mb-2">
+          Gunakan kode referral sebelum daftar
+        </h3>
+        <p class="font-mono text-xs sm:text-sm text-text-muted mb-6 leading-relaxed">
+          Salin kode di bawah ini, lalu tempel pada form pendaftaran untuk Madura.
+        </p>
+
+        <div class="w-full flex items-center justify-between gap-3 bg-dark-surface/70 border border-dark-border/60 rounded-lg px-4 py-3 mb-6">
+          <code id="referral-code-text" class="font-mono text-lg sm:text-xl font-bold text-terminal-cyan tracking-widest select-all">
+            MADURADEV
+          </code>
+          <button
+            id="copy-referral-code"
+            type="button"
+            class="cyber-button cyber-button-green px-3 py-2 text-[11px] font-semibold whitespace-nowrap"
+          >
+            [ COPY ]
+          </button>
+        </div>
+
+        <a
+          id="proceed-registration-link"
+          href="https://maukuliah.id/beasiswa-semesta"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="cyber-button cyber-button-cyan w-full text-center px-6 py-3 text-sm font-semibold"
+        >
+          [ PROCEED_TO_REGISTER ]
+        </a>
+      </div>
+    </div>
+  </div>
 </section>
+
+<script>
+  const openBtn = document.getElementById("open-referral-modal");
+  const closeBtn = document.getElementById("close-referral-modal");
+  const overlay = document.getElementById("referral-modal-overlay");
+  const copyBtn = document.getElementById("copy-referral-code");
+  const codeText = document.getElementById("referral-code-text");
+  const proceedLink = document.getElementById("proceed-registration-link");
+
+  function openModal() {
+    overlay?.classList.remove("hidden");
+    overlay?.classList.add("flex");
+    document.body.style.overflow = "hidden";
+  }
+
+  function closeModal() {
+    overlay?.classList.add("hidden");
+    overlay?.classList.remove("flex");
+    document.body.style.overflow = "";
+  }
+
+  openBtn?.addEventListener("click", openModal);
+  closeBtn?.addEventListener("click", closeModal);
+
+  overlay?.addEventListener("click", (e) => {
+    if (e.target === overlay) closeModal();
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") closeModal();
+  });
+
+  copyBtn?.addEventListener("click", async () => {
+    const code = codeText?.textContent?.trim() ?? "MADURADEV";
+    try {
+      await navigator.clipboard.writeText(code);
+    } catch {
+      const range = document.createRange();
+      if (codeText) range.selectNodeContents(codeText);
+      const selection = window.getSelection();
+      selection?.removeAllRanges();
+      selection?.addRange(range);
+      document.execCommand("copy");
+      selection?.removeAllRanges();
+    }
+
+    if (copyBtn) {
+      const original = copyBtn.textContent;
+      copyBtn.textContent = "[ COPIED! ]";
+      setTimeout(() => {
+        copyBtn.textContent = original;
+      }, 1500);
+    }
+  });
+
+  // Optional: close modal once user proceeds to registration
+  proceedLink?.addEventListener("click", () => {
+    setTimeout(closeModal, 300);
+  });
+</script>
