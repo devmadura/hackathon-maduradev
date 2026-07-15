@@ -9,14 +9,14 @@ import TerminalConsole from "./TerminalConsole.astro";
   class="relative min-h-screen flex items-center justify-center pt-24 pb-16 px-4 sm:px-6 lg:px-8 cyber-grid overflow-hidden"
 >
   <!-- Cybernetic tech graphics (Subtle layout borders and status lines) -->
-  <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-terminal-cyan/20 to-transparent"></div>
+  <div class="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-terminal-cyan/20 to-transparent"></div>
   <div class="absolute inset-y-0 left-10 w-px bg-dark-border/20 hidden lg:block"></div>
   <div class="absolute inset-y-0 right-10 w-px bg-dark-border/20 hidden lg:block"></div>
   
   <!-- Glowing Background Orbs -->
   <div class="absolute inset-0 pointer-events-none z-0">
-    <div class="absolute top-1/4 left-1/4 w-[350px] h-[350px] bg-terminal-cyan/5 rounded-full blur-[100px]"></div>
-    <div class="absolute bottom-1/4 right-1/4 w-[300px] h-[300px] bg-terminal-magenta/5 rounded-full blur-[90px]"></div>
+    <div class="absolute top-1/4 left-1/4 w-87.5 h-87.5 bg-terminal-cyan/5 rounded-full blur-[100px]"></div>
+    <div class="absolute bottom-1/4 right-1/4 w-75 h-75 bg-terminal-magenta/5 rounded-full blur-[90px]"></div>
   </div>
 
   <div class="relative z-10 max-w-7xl mx-auto w-full grid lg:grid-cols-12 gap-12 items-center">
@@ -40,7 +40,7 @@ import TerminalConsole from "./TerminalConsole.astro";
         class="font-mono text-4xl sm:text-5xl md:text-6xl font-extrabold leading-[1.1] tracking-tight text-text-primary"
       >
         <span class="block text-text-muted text-lg sm:text-xl font-semibold mb-2">HACKATHON_EVENT:</span>
-        <span class="glitch-text text-transparent bg-clip-text bg-gradient-to-r from-terminal-cyan via-terminal-purple to-terminal-magenta" data-text="SEMESTA 8">SEMESTA 8</span>
+        <span class="glitch-text text-transparent bg-clip-text bg-linear-to-r from-terminal-cyan via-terminal-purple to-terminal-magenta" data-text="SEMESTA 8">SEMESTA 8</span>
       </h1>
 
       <!-- Subtitle -->
@@ -114,7 +114,7 @@ import TerminalConsole from "./TerminalConsole.astro";
       class="relative w-full max-w-md bg-dark-card border border-dark-border rounded-lg cyber-grid overflow-hidden"
     >
       <!-- top accent line -->
-      <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-terminal-cyan/40 to-transparent"></div>
+      <div class="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-terminal-cyan/40 to-transparent"></div>
 
       <!-- close button -->
       <button
